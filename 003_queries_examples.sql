@@ -1,6 +1,5 @@
+
 -- TRIGGER
-
-
 -- TRIGGER: Reduce inventory quantity after an item is added to an order
 CREATE OR REPLACE FUNCTION reduce_inventory_after_order()
 RETURNS TRIGGER AS $$
@@ -18,12 +17,7 @@ CREATE TRIGGER trg_reduce_inventory_after_order
 AFTER INSERT ON order_items
 FOR EACH ROW
 EXECUTE FUNCTION reduce_inventory_after_order();
-
-
-
 -- VIEW
-
-
 -- VIEW: Show item details with brand, category, color, size, and stock
 CREATE OR REPLACE VIEW item_inventory_view AS
 SELECT
@@ -43,11 +37,7 @@ JOIN categories c ON ci.category_id = c.category_id
 JOIN colors co ON ci.color_id = co.color_id
 JOIN sizes s ON ci.size_id = s.size_id
 JOIN inventory i ON ci.item_id = i.item_id;
-
-
 -- READ QUERIES
-
-
 -- READ: Show all clothing items with full item details
 SELECT *
 FROM item_inventory_view;
@@ -103,11 +93,7 @@ SELECT
 FROM supplier_items si
 JOIN suppliers sup ON si.supplier_id = sup.supplier_id
 JOIN clothing_items ci ON si.item_id = ci.item_id;
-
-
 -- UPDATE QUERIES
-
-
 -- UPDATE: Change a customer phone number
 UPDATE customers
 SET phone_number = '555-222-1000'
@@ -138,24 +124,21 @@ WHERE item_id = 1;
 UPDATE restock_orders
 SET expected_arrival = '2026-05-15 10:00:00'
 WHERE restock_id = 1;
-
 -- DELETE QUERIES
-
-
 -- DELETE: Remove a commission record for a canceled order
 DELETE FROM commissions
-WHERE order_id = 1;
-
--- DELETE: Remove sale record before deleting canceled order
-DELETE FROM sales
 WHERE order_id = 1;
 
 -- DELETE: Remove order items from a canceled order
 DELETE FROM order_items
 WHERE order_id = 1;
 
--- DELETE: Remove a canceled order
+-- DELETE: Remove the canceled order before deleting its sale
 DELETE FROM orders
+WHERE order_id = 1;
+
+-- DELETE: Remove sale record after deleting related order
+DELETE FROM sales
 WHERE order_id = 1;
 
 -- DELETE: Remove a supplier item relationship
