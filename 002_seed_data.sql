@@ -104,6 +104,17 @@ INSERT INTO customers (customer_id, first_name, last_name, phone_number, loyalty
 (4, 'Devin',  'Park',     '555-404-5060', 2),
 (5, 'Zoe',    'Williams', '555-505-6070', 1);
 
+-- Inventory
+INSERT INTO inventory (item_id, quantity_available, reorder_level, future_shipment_quantity) VALUES
+(1, 24, 5,  50),
+(2, 12, 5,  25),
+(3, 18, 8,  30),
+(4,  6, 3,  10),
+(5, 20, 5,  40),
+(6, 15, 5,  30),
+(7, 30, 10, 50),
+(8, 22, 5,  40);
+
 -- Clothing items
 INSERT INTO clothing_items (item_id, item_name, brand_id, category_id, color_id, size_id, price) VALUES
 (1, 'Essential Crewneck Tee',    1, 1, 1, 3, 29.99),
@@ -128,16 +139,13 @@ INSERT INTO item_units (rfid, item_id, location_id, unit_status_id) VALUES
 ('RFID-0009', 7, 1, 1),
 ('RFID-0010', 8, 4, 1);
 
--- Inventory
-INSERT INTO inventory (item_id, quantity_available, reorder_level, future_shipment_quantity) VALUES
-(1, 24, 5,  50),
-(2, 12, 5,  25),
-(3, 18, 8,  30),
-(4,  6, 3,  10),
-(5, 20, 5,  40),
-(6, 15, 5,  30),
-(7, 30, 10, 50),
-(8, 22, 5,  40);
+-- Sales (one per completed/shipped order)
+INSERT INTO sales (sale_id, order_id, payment_method_id, sale_date, total_amount) VALUES
+(1, 1, 2, NOW() - INTERVAL '10 days', 84.97),
+(2, 2, 3, NOW() - INTERVAL '5 days',  79.99),
+(3, 3, 4, NOW() - INTERVAL '2 days',  239.97),
+(4, 4, 4, NOW() - INTERVAL '1 days',  174.99),
+(5, 5, 4, NOW() - INTERVAL '1 days',  174.99);
 
 -- Orders
 INSERT INTO orders (order_id, customer_id, employee_id, order_date, delivery_type_id, order_status_id) VALUES
@@ -158,11 +166,7 @@ INSERT INTO order_items (order_item_id, order_id, item_id, quantity, unit_price)
 (7, 5, 5, 1, 49.99),
 (8, 5, 6, 2, 34.99);
 
--- Sales (one per completed/shipped order)
-INSERT INTO sales (sale_id, order_id, payment_method_id, sale_date, total_amount) VALUES
-(1, 1, 2, NOW() - INTERVAL '10 days', 84.97),
-(2, 2, 3, NOW() - INTERVAL '5 days',  79.99),
-(3, 3, 4, NOW() - INTERVAL '2 days',  239.97);
+
 
 -- Commissions
 INSERT INTO commissions (commission_id, employee_id, order_id, commission_amount) VALUES
