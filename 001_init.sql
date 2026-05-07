@@ -1,123 +1,213 @@
--- Create the "employees" table
 CREATE TABLE "employees" (
-  "employee_id" int PRIMARY KEY, -- ID for each employee
-  "first_name" varchar, -- Employee's first name
-  "last_name" varchar, -- Employee's last name
-  "ssn" varchar UNIQUE, -- Unique Social Security Number
-  "role_id" int, -- Role reference
-  "access_token" varchar, -- Auth token
-  "hourly_rate" decimal -- Hourly wage
+  "employee_id" int PRIMARY KEY,
+  "first_name" varchar,
+  "last_name" varchar,
+  "ssn" varchar UNIQUE,
+  "role_id" int,
+  "access_token" varchar,
+  "hourly_rate" decimal
 );
 
--- Create the "employee_roles" table
 CREATE TABLE "employee_roles" (
-  "role_id" int PRIMARY KEY, -- ID for each role
-  "role_name" varchar UNIQUE -- Unique role name
+  "role_id" int PRIMARY KEY,
+  "role_name" varchar UNIQUE
 );
 
--- Create the "customers" table
 CREATE TABLE "customers" (
-  "customer_id" int PRIMARY KEY, -- ID for each customer
-  "first_name" varchar, -- Customer's first name
-  "last_name" varchar, -- Customer's last name
-  "phone_number" varchar, -- Phone number
-  "loyalty_id" int -- Loyalty level reference
+  "customer_id" int PRIMARY KEY,
+  "first_name" varchar,
+  "last_name" varchar,
+  "phone_number" varchar,
+  "loyalty_id" int
 );
 
--- Create the "loyalty_levels" table
 CREATE TABLE "loyalty_levels" (
-  "loyalty_id" int PRIMARY KEY, -- ID for each loyalty level
-  "loyalty_name" varchar UNIQUE -- Unique loyalty name
+  "loyalty_id" int PRIMARY KEY,
+  "loyalty_name" varchar UNIQUE
 );
 
--- Create the "locations" table
 CREATE TABLE "locations" (
-  "location_id" int PRIMARY KEY, -- ID for each location
-  "location_name" varchar UNIQUE -- Unique location name
+  "location_id" int PRIMARY KEY,
+  "location_name" varchar UNIQUE
 );
 
--- Create the "brands" table
 CREATE TABLE "brands" (
-  "brand_id" int PRIMARY KEY, -- ID for each brand
-  "brand_name" varchar UNIQUE -- Unique brand name
+  "brand_id" int PRIMARY KEY,
+  "brand_name" varchar UNIQUE
 );
 
--- Create the "categories" table
 CREATE TABLE "categories" (
-  "category_id" int PRIMARY KEY, -- ID for each category
-  "category_name" varchar UNIQUE -- Unique category name
+  "category_id" int PRIMARY KEY,
+  "category_name" varchar UNIQUE
 );
 
--- Create the "colors" table
 CREATE TABLE "colors" (
-  "color_id" int PRIMARY KEY, -- ID for each color
-  "color_name" varchar UNIQUE -- Unique color name
+  "color_id" int PRIMARY KEY,
+  "color_name" varchar UNIQUE
 );
 
--- Create the "sizes" table
 CREATE TABLE "sizes" (
-  "size_id" int PRIMARY KEY, -- ID for each size
-  "size_name" varchar UNIQUE -- Unique size name
+  "size_id" int PRIMARY KEY,
+  "size_name" varchar UNIQUE
 );
 
--- Create the "clothing_items" table
 CREATE TABLE "clothing_items" (
-  "item_id" int PRIMARY KEY, -- ID for each item
-  "item_name" varchar, -- Item name
-  "brand_id" int, -- Brand reference
-  "category_id" int, -- Category reference
-  "color_id" int, -- Color reference
-  "size_id" int, -- Size reference
-  "price" decimal -- Item price
+  "item_id" int PRIMARY KEY,
+  "item_name" varchar,
+  "brand_id" int,
+  "category_id" int,
+  "color_id" int,
+  "size_id" int,
+  "price" decimal
 );
 
--- Create the "item_units" table
 CREATE TABLE "item_units" (
-  "rfid" varchar PRIMARY KEY, -- Unique RFID
-  "item_id" int, -- Item reference
-  "location_id" int, -- Location reference
-  "unit_status_id" int -- Status reference
+  "rfid" varchar PRIMARY KEY,
+  "item_id" int,
+  "location_id" int,
+  "unit_status_id" int
 );
 
--- Create the "unit_statuses" table
 CREATE TABLE "unit_statuses" (
-  "unit_status_id" int PRIMARY KEY, -- ID for each status
-  "status_name" varchar UNIQUE -- Unique status name
+  "unit_status_id" int PRIMARY KEY,
+  "status_name" varchar UNIQUE
 );
 
--- Create the "inventory" table
 CREATE TABLE "inventory" (
-  "item_id" int PRIMARY KEY, -- Item reference
-  "quantity_available" int, -- Available quantity
-  "reorder_level" int, -- Reorder level
-  "future_shipment_quantity" int -- Future shipment quantity
+  "item_id" int PRIMARY KEY,
+  "quantity_available" int,
+  "reorder_level" int,
+  "future_shipment_quantity" int
 );
 
--- Create the "orders" table
 CREATE TABLE "orders" (
-  "order_id" int PRIMARY KEY, -- ID for each order
-  "customer_id" int, -- Customer reference
-  "employee_id" int, -- Employee reference
-  "order_date" timestamp, -- Order date
-  "delivery_type_id" int, -- Delivery type reference
-  "order_status_id" int -- Order status reference
+  "order_id" int PRIMARY KEY,
+  "customer_id" int,
+  "employee_id" int,
+  "order_date" timestamp,
+  "delivery_type_id" int,
+  "order_status_id" int
 );
 
--- Create the "order_items" table
 CREATE TABLE "order_items" (
-  "order_item_id" int PRIMARY KEY, -- ID for each order item
-  "order_id" int, -- Order reference
-  "item_id" int, -- Item reference
-  "quantity" int, -- Quantity ordered
-  "unit_price" decimal -- Price per unit
+  "order_item_id" int PRIMARY KEY,
+  "order_id" int,
+  "item_id" int,
+  "quantity" int,
+  "unit_price" decimal
 );
 
--- Create the "delivery_types" table
 CREATE TABLE "delivery_types" (
-  "delivery_type_id" int PRIMARY KEY, -- ID for each delivery type
-  "delivery_type_name" varchar UNIQUE -- Unique delivery type name
+  "delivery_type_id" int PRIMARY KEY,
+  "delivery_type_name" varchar UNIQUE
 );
 
--- Create the "order_statuses" table
 CREATE TABLE "order_statuses" (
-  "order_status_id" int PRIMARY KEY, -- ID for
+  "order_status_id" int PRIMARY KEY,
+  "status_name" varchar UNIQUE
+);
+
+CREATE TABLE "sales" (
+  "sale_id" int PRIMARY KEY,
+  "order_id" int UNIQUE,
+  "payment_method_id" int,
+  "sale_date" timestamp,
+  "total_amount" decimal
+);
+
+CREATE TABLE "payment_methods" (
+  "payment_method_id" int PRIMARY KEY,
+  "payment_method_name" varchar UNIQUE
+);
+
+CREATE TABLE "commissions" (
+  "commission_id" int PRIMARY KEY,
+  "employee_id" int,
+  "order_id" int UNIQUE,
+  "commission_amount" decimal
+);
+
+CREATE TABLE "suppliers" (
+  "supplier_id" int PRIMARY KEY,
+  "supplier_name" varchar,
+  "phone_number" varchar,
+  "email" varchar
+);
+
+CREATE TABLE "supplier_items" (
+  "supplier_id" int,
+  "item_id" int,
+  PRIMARY KEY ("supplier_id", "item_id")
+);
+
+CREATE TABLE "restock_orders" (
+  "restock_id" int PRIMARY KEY,
+  "supplier_id" int,
+  "order_date" timestamp,
+  "expected_arrival" timestamp,
+  "restock_status_id" int
+);
+
+CREATE TABLE "restock_order_items" (
+  "restock_item_id" int PRIMARY KEY,
+  "restock_id" int,
+  "item_id" int,
+  "quantity_ordered" int
+);
+
+CREATE TABLE "restock_statuses" (
+  "restock_status_id" int PRIMARY KEY,
+  "status_name" varchar UNIQUE
+);
+
+ALTER TABLE "employees" ADD FOREIGN KEY ("role_id") REFERENCES "employee_roles" ("role_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "customers" ADD FOREIGN KEY ("loyalty_id") REFERENCES "loyalty_levels" ("loyalty_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "clothing_items" ADD FOREIGN KEY ("brand_id") REFERENCES "brands" ("brand_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "clothing_items" ADD FOREIGN KEY ("category_id") REFERENCES "categories" ("category_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "clothing_items" ADD FOREIGN KEY ("color_id") REFERENCES "colors" ("color_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "clothing_items" ADD FOREIGN KEY ("size_id") REFERENCES "sizes" ("size_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "item_units" ADD FOREIGN KEY ("item_id") REFERENCES "clothing_items" ("item_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "item_units" ADD FOREIGN KEY ("location_id") REFERENCES "locations" ("location_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "item_units" ADD FOREIGN KEY ("unit_status_id") REFERENCES "unit_statuses" ("unit_status_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "clothing_items" ADD FOREIGN KEY ("item_id") REFERENCES "inventory" ("item_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("customer_id") REFERENCES "customers" ("customer_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("employee_id") REFERENCES "employees" ("employee_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("delivery_type_id") REFERENCES "delivery_types" ("delivery_type_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("order_status_id") REFERENCES "order_statuses" ("order_status_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "order_items" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("order_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "order_items" ADD FOREIGN KEY ("item_id") REFERENCES "clothing_items" ("item_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("order_id") REFERENCES "sales" ("order_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "sales" ADD FOREIGN KEY ("payment_method_id") REFERENCES "payment_methods" ("payment_method_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "commissions" ADD FOREIGN KEY ("employee_id") REFERENCES "employees" ("employee_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "commissions" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("order_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "supplier_items" ADD FOREIGN KEY ("supplier_id") REFERENCES "suppliers" ("supplier_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "supplier_items" ADD FOREIGN KEY ("item_id") REFERENCES "clothing_items" ("item_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "restock_orders" ADD FOREIGN KEY ("supplier_id") REFERENCES "suppliers" ("supplier_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "restock_orders" ADD FOREIGN KEY ("restock_status_id") REFERENCES "restock_statuses" ("restock_status_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "restock_order_items" ADD FOREIGN KEY ("restock_id") REFERENCES "restock_orders" ("restock_id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "restock_order_items" ADD FOREIGN KEY ("item_id") REFERENCES "clothing_items" ("item_id") DEFERRABLE INITIALLY IMMEDIATE;
