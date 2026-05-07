@@ -1,213 +1,226 @@
-CREATE TABLE `employees` (
-  `employee_id` int PRIMARY KEY,
-  `first_name` varchar(255),
-  `last_name` varchar(255),
-  `ssn` varchar(255) UNIQUE,
-  `role_id` int,
-  `access_token` varchar(255),
-  `hourly_rate` decimal
-);
+// Employee info
+Table employees {
+  employee_id int [pk] // employee ID
+  first_name varchar // first name
+  last_name varchar // last name
+  ssn varchar [unique] // unique SSN
+  role_id int // role link
+  access_token varchar // login token
+  hourly_rate decimal // pay rate
+}
 
-CREATE TABLE `employee_roles` (
-  `role_id` int PRIMARY KEY,
-  `role_name` varchar(255) UNIQUE
-);
+// Employee roles
+Table employee_roles {
+  role_id int [pk] // role ID
+  role_name varchar [unique] // role name
+}
 
-CREATE TABLE `customers` (
-  `customer_id` int PRIMARY KEY,
-  `first_name` varchar(255),
-  `last_name` varchar(255),
-  `phone_number` varchar(255),
-  `loyalty_id` int
-);
+// Customer info
+Table customers {
+  customer_id int [pk] // customer ID
+  first_name varchar
+  last_name varchar
+  phone_number varchar
+  loyalty_id int // loyalty link
+}
 
-CREATE TABLE `loyalty_levels` (
-  `loyalty_id` int PRIMARY KEY,
-  `loyalty_name` varchar(255) UNIQUE
-);
+// Loyalty levels
+Table loyalty_levels {
+  loyalty_id int [pk]
+  loyalty_name varchar [unique]
+}
 
-CREATE TABLE `locations` (
-  `location_id` int PRIMARY KEY,
-  `location_name` varchar(255) UNIQUE
-);
+// Store locations
+Table locations {
+  location_id int [pk]
+  location_name varchar [unique]
+}
 
-CREATE TABLE `brands` (
-  `brand_id` int PRIMARY KEY,
-  `brand_name` varchar(255) UNIQUE
-);
+// Brands
+Table brands {
+  brand_id int [pk]
+  brand_name varchar [unique]
+}
 
-CREATE TABLE `categories` (
-  `category_id` int PRIMARY KEY,
-  `category_name` varchar(255) UNIQUE
-);
+// Categories
+Table categories {
+  category_id int [pk]
+  category_name varchar [unique]
+}
 
-CREATE TABLE `colors` (
-  `color_id` int PRIMARY KEY,
-  `color_name` varchar(255) UNIQUE
-);
+// Colors
+Table colors {
+  color_id int [pk]
+  color_name varchar [unique]
+}
 
-CREATE TABLE `sizes` (
-  `size_id` int PRIMARY KEY,
-  `size_name` varchar(255) UNIQUE
-);
+// Sizes
+Table sizes {
+  size_id int [pk]
+  size_name varchar [unique]
+}
 
-CREATE TABLE `clothing_items` (
-  `item_id` int PRIMARY KEY,
-  `item_name` varchar(255),
-  `brand_id` int,
-  `category_id` int,
-  `color_id` int,
-  `size_id` int,
-  `price` decimal
-);
+// Clothing items
+Table clothing_items {
+  item_id int [pk]
+  item_name varchar
+  brand_id int // brand link
+  category_id int // category link
+  color_id int // color link
+  size_id int // size link
+  price decimal
+}
 
-CREATE TABLE `item_units` (
-  `rfid` varchar(255) PRIMARY KEY,
-  `item_id` int,
-  `location_id` int,
-  `unit_status_id` int
-);
+// Physical item units
+Table item_units {
+  rfid varchar [pk] // RFID tag
+  item_id int
+  location_id int
+  unit_status_id int
+}
 
-CREATE TABLE `unit_statuses` (
-  `unit_status_id` int PRIMARY KEY,
-  `status_name` varchar(255) UNIQUE
-);
+// Unit statuses
+Table unit_statuses {
+  unit_status_id int [pk]
+  status_name varchar [unique]
+}
 
-CREATE TABLE `inventory` (
-  `item_id` int PRIMARY KEY,
-  `quantity_available` int,
-  `reorder_level` int,
-  `future_shipment_quantity` int
-);
+// Inventory counts
+Table inventory {
+  item_id int [pk]
+  quantity_available int
+  reorder_level int
+  future_shipment_quantity int
+}
 
-CREATE TABLE `orders` (
-  `order_id` int PRIMARY KEY,
-  `customer_id` int,
-  `employee_id` int,
-  `order_date` timestamp,
-  `delivery_type_id` int,
-  `order_status_id` int
-);
+// Orders
+Table orders {
+  order_id int [pk]
+  customer_id int
+  employee_id int
+  order_date timestamp
+  delivery_type_id int
+  order_status_id int
+}
 
-CREATE TABLE `order_items` (
-  `order_item_id` int PRIMARY KEY,
-  `order_id` int,
-  `item_id` int,
-  `quantity` int,
-  `unit_price` decimal
-);
+// Items in orders
+Table order_items {
+  order_item_id int [pk]
+  order_id int
+  item_id int
+  quantity int
+  unit_price decimal
+}
 
-CREATE TABLE `delivery_types` (
-  `delivery_type_id` int PRIMARY KEY,
-  `delivery_type_name` varchar(255) UNIQUE
-);
+// Delivery methods
+Table delivery_types {
+  delivery_type_id int [pk]
+  delivery_type_name varchar [unique]
+}
 
-CREATE TABLE `order_statuses` (
-  `order_status_id` int PRIMARY KEY,
-  `status_name` varchar(255) UNIQUE
-);
+// Order statuses
+Table order_statuses {
+  order_status_id int [pk]
+  status_name varchar [unique]
+}
 
-CREATE TABLE `sales` (
-  `sale_id` int PRIMARY KEY,
-  `order_id` int UNIQUE,
-  `payment_method_id` int,
-  `sale_date` timestamp,
-  `total_amount` decimal
-);
+// Sales
+Table sales {
+  sale_id int [pk]
+  order_id int [unique]
+  payment_method_id int
+  sale_date timestamp
+  total_amount decimal
+}
 
-CREATE TABLE `payment_methods` (
-  `payment_method_id` int PRIMARY KEY,
-  `payment_method_name` varchar(255) UNIQUE
-);
+// Payment methods
+Table payment_methods {
+  payment_method_id int [pk]
+  payment_method_name varchar [unique]
+}
 
-CREATE TABLE `commissions` (
-  `commission_id` int PRIMARY KEY,
-  `employee_id` int,
-  `order_id` int UNIQUE,
-  `commission_amount` decimal
-);
+// Employee commissions
+Table commissions {
+  commission_id int [pk]
+  employee_id int
+  order_id int [unique]
+  commission_amount decimal
+}
 
-CREATE TABLE `suppliers` (
-  `supplier_id` int PRIMARY KEY,
-  `supplier_name` varchar(255),
-  `phone_number` varchar(255),
-  `email` varchar(255)
-);
+// Suppliers
+Table suppliers {
+  supplier_id int [pk]
+  supplier_name varchar
+  phone_number varchar
+  email varchar
+}
 
-CREATE TABLE `supplier_items` (
-  `supplier_id` int,
-  `item_id` int,
-  PRIMARY KEY (`supplier_id`, `item_id`)
-);
+// Supplier-item links
+Table supplier_items {
+  supplier_id int
+  item_id int
 
-CREATE TABLE `restock_orders` (
-  `restock_id` int PRIMARY KEY,
-  `supplier_id` int,
-  `order_date` timestamp,
-  `expected_arrival` timestamp,
-  `restock_status_id` int
-);
+  indexes {
+    (supplier_id, item_id) [pk] // composite PK
+  }
+}
 
-CREATE TABLE `restock_order_items` (
-  `restock_item_id` int PRIMARY KEY,
-  `restock_id` int,
-  `item_id` int,
-  `quantity_ordered` int
-);
+// Restock orders
+Table restock_orders {
+  restock_id int [pk]
+  supplier_id int
+  order_date timestamp
+  expected_arrival timestamp
+  restock_status_id int
+}
 
-CREATE TABLE `restock_statuses` (
-  `restock_status_id` int PRIMARY KEY,
-  `status_name` varchar(255) UNIQUE
-);
+// Restock items
+Table restock_order_items {
+  restock_item_id int [pk]
+  restock_id int
+  item_id int
+  quantity_ordered int
+}
 
-ALTER TABLE `employees` ADD FOREIGN KEY (`role_id`) REFERENCES `employee_roles` (`role_id`);
+// Restock statuses
+Table restock_statuses {
+  restock_status_id int [pk]
+  status_name varchar [unique]
+}
 
-ALTER TABLE `customers` ADD FOREIGN KEY (`loyalty_id`) REFERENCES `loyalty_levels` (`loyalty_id`);
+// Relationships
+Ref: employees.role_id > employee_roles.role_id
+Ref: customers.loyalty_id > loyalty_levels.loyalty_id
 
-ALTER TABLE `clothing_items` ADD FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`);
+Ref: clothing_items.brand_id > brands.brand_id
+Ref: clothing_items.category_id > categories.category_id
+Ref: clothing_items.color_id > colors.color_id
+Ref: clothing_items.size_id > sizes.size_id
 
-ALTER TABLE `clothing_items` ADD FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
+Ref: item_units.item_id > clothing_items.item_id
+Ref: item_units.location_id > locations.location_id
+Ref: item_units.unit_status_id > unit_statuses.unit_status_id
 
-ALTER TABLE `clothing_items` ADD FOREIGN KEY (`color_id`) REFERENCES `colors` (`color_id`);
+Ref: inventory.item_id - clothing_items.item_id
 
-ALTER TABLE `clothing_items` ADD FOREIGN KEY (`size_id`) REFERENCES `sizes` (`size_id`);
+Ref: orders.customer_id > customers.customer_id
+Ref: orders.employee_id > employees.employee_id
+Ref: orders.delivery_type_id > delivery_types.delivery_type_id
+Ref: orders.order_status_id > order_statuses.order_status_id
 
-ALTER TABLE `item_units` ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
+Ref: order_items.order_id > orders.order_id
+Ref: order_items.item_id > clothing_items.item_id
 
-ALTER TABLE `item_units` ADD FOREIGN KEY (`location_id`) REFERENCES `locations` (`location_id`);
+Ref: sales.order_id - orders.order_id
+Ref: sales.payment_method_id > payment_methods.payment_method_id
 
-ALTER TABLE `item_units` ADD FOREIGN KEY (`unit_status_id`) REFERENCES `unit_statuses` (`unit_status_id`);
+Ref: commissions.employee_id > employees.employee_id
+Ref: commissions.order_id > orders.order_id
 
-ALTER TABLE `clothing_items` ADD FOREIGN KEY (`item_id`) REFERENCES `inventory` (`item_id`);
+Ref: supplier_items.supplier_id > suppliers.supplier_id
+Ref: supplier_items.item_id > clothing_items.item_id
 
-ALTER TABLE `orders` ADD FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`);
-
-ALTER TABLE `orders` ADD FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`);
-
-ALTER TABLE `orders` ADD FOREIGN KEY (`delivery_type_id`) REFERENCES `delivery_types` (`delivery_type_id`);
-
-ALTER TABLE `orders` ADD FOREIGN KEY (`order_status_id`) REFERENCES `order_statuses` (`order_status_id`);
-
-ALTER TABLE `order_items` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
-
-ALTER TABLE `order_items` ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
-
-ALTER TABLE `orders` ADD FOREIGN KEY (`order_id`) REFERENCES `sales` (`order_id`);
-
-ALTER TABLE `sales` ADD FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`payment_method_id`);
-
-ALTER TABLE `commissions` ADD FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`);
-
-ALTER TABLE `commissions` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
-
-ALTER TABLE `supplier_items` ADD FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`);
-
-ALTER TABLE `supplier_items` ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
-
-ALTER TABLE `restock_orders` ADD FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`);
-
-ALTER TABLE `restock_orders` ADD FOREIGN KEY (`restock_status_id`) REFERENCES `restock_statuses` (`restock_status_id`);
-
-ALTER TABLE `restock_order_items` ADD FOREIGN KEY (`restock_id`) REFERENCES `restock_orders` (`restock_id`);
-
-ALTER TABLE `restock_order_items` ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
+Ref: restock_orders.supplier_id > suppliers.supplier_id
+Ref: restock_orders.restock_status_id > restock_statuses.restock_status_id
+Ref: restock_order_items.restock_id > restock_orders.restock_id
+Ref: restock_order_items.item_id > clothing_items.item_id
