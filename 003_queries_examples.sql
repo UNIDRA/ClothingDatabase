@@ -1,4 +1,3 @@
-
 -- TRIGGER
 
 
@@ -24,6 +23,7 @@ EXECUTE FUNCTION reduce_inventory_after_order();
 
 -- VIEW
 
+
 -- VIEW: Show item details with brand, category, color, size, and stock
 CREATE OR REPLACE VIEW item_inventory_view AS
 SELECT
@@ -43,7 +43,6 @@ JOIN categories c ON ci.category_id = c.category_id
 JOIN colors co ON ci.color_id = co.color_id
 JOIN sizes s ON ci.size_id = s.size_id
 JOIN inventory i ON ci.item_id = i.item_id;
-
 
 
 -- READ QUERIES
@@ -106,7 +105,6 @@ JOIN suppliers sup ON si.supplier_id = sup.supplier_id
 JOIN clothing_items ci ON si.item_id = ci.item_id;
 
 
-
 -- UPDATE QUERIES
 
 
@@ -141,8 +139,6 @@ UPDATE restock_orders
 SET expected_arrival = '2026-05-15 10:00:00'
 WHERE restock_id = 1;
 
-
-
 -- DELETE QUERIES
 
 
@@ -169,4 +165,4 @@ WHERE supplier_id = 1
 
 -- DELETE: Remove restock order items for a canceled restock order
 DELETE FROM restock_order_items
-WHERE restock_id = 1;--CRUD Examples READ, UPDATE, DELETE, TRIGGER, VIEW--CRUD Examples READ, UPDATE, DELETE, TRIGGER, VIEW
+WHERE restock_id = 1;
