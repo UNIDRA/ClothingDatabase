@@ -1,237 +1,265 @@
-// Employee table stores worker information
-Table employees {
-  employee_id int [pk] // primary key for each employee
-  first_name varchar // employee first name
-  last_name varchar // employee last name
-  ssn varchar [unique] // unique social security number
-  role_id int // connects employee to their role
-  access_token varchar // employee system access token
-  hourly_rate decimal // employee hourly pay rate
-}
+-- Employees table
+CREATE TABLE `employees` (
+  `employee_id` int PRIMARY KEY, -- employee ID
+  `first_name` varchar(255), -- first name
+  `last_name` varchar(255), -- last name
+  `ssn` varchar(255) UNIQUE, -- unique SSN
+  `role_id` int, -- role link
+  `access_token` varchar(255), -- login token
+  `hourly_rate` decimal -- hourly pay
+);
 
-// Stores possible employee roles
-Table employee_roles {
-  role_id int [pk] // primary key for each role
-  role_name varchar [unique] // unique role name
-}
+-- Employee roles
+CREATE TABLE `employee_roles` (
+  `role_id` int PRIMARY KEY, -- role ID
+  `role_name` varchar(255) UNIQUE -- role name
+);
 
-// Customer table stores customer information
-Table customers {
-  customer_id int [pk] // primary key for each customer
-  first_name varchar // customer first name
-  last_name varchar // customer last name
-  phone_number varchar // customer phone number
-  loyalty_id int // connects customer to loyalty level
-}
+-- Customers
+CREATE TABLE `customers` (
+  `customer_id` int PRIMARY KEY, -- customer ID
+  `first_name` varchar(255),
+  `last_name` varchar(255),
+  `phone_number` varchar(255),
+  `loyalty_id` int -- loyalty link
+);
 
-// Stores customer loyalty levels
-Table loyalty_levels {
-  loyalty_id int [pk] // primary key for each loyalty level
-  loyalty_name varchar [unique] // unique loyalty level name
-}
+-- Loyalty levels
+CREATE TABLE `loyalty_levels` (
+  `loyalty_id` int PRIMARY KEY,
+  `loyalty_name` varchar(255) UNIQUE
+);
 
-// Stores store or warehouse locations
-Table locations {
-  location_id int [pk] // primary key for each location
-  location_name varchar [unique] // unique location name
-}
+-- Locations
+CREATE TABLE `locations` (
+  `location_id` int PRIMARY KEY,
+  `location_name` varchar(255) UNIQUE
+);
 
-// Stores clothing brands
-Table brands {
-  brand_id int [pk] // primary key for each brand
-  brand_name varchar [unique] // unique brand name
-}
+-- Brands
+CREATE TABLE `brands` (
+  `brand_id` int PRIMARY KEY,
+  `brand_name` varchar(255) UNIQUE
+);
 
-// Stores clothing categories
-Table categories {
-  category_id int [pk] // primary key for each category
-  category_name varchar [unique] // unique category name
-}
+-- Categories
+CREATE TABLE `categories` (
+  `category_id` int PRIMARY KEY,
+  `category_name` varchar(255) UNIQUE
+);
 
-// Stores item colors
-Table colors {
-  color_id int [pk] // primary key for each color
-  color_name varchar [unique] // unique color name
-}
+-- Colors
+CREATE TABLE `colors` (
+  `color_id` int PRIMARY KEY,
+  `color_name` varchar(255) UNIQUE
+);
 
-// Stores item sizes
-Table sizes {
-  size_id int [pk] // primary key for each size
-  size_name varchar [unique] // unique size name
-}
+-- Sizes
+CREATE TABLE `sizes` (
+  `size_id` int PRIMARY KEY,
+  `size_name` varchar(255) UNIQUE
+);
 
-// Stores general clothing item information
-Table clothing_items {
-  item_id int [pk] // primary key for each clothing item
-  item_name varchar // name of the clothing item
-  brand_id int // connects item to brand
-  category_id int // connects item to category
-  color_id int // connects item to color
-  size_id int // connects item to size
-  price decimal // item price
-}
+-- Clothing items
+CREATE TABLE `clothing_items` (
+  `item_id` int PRIMARY KEY,
+  `item_name` varchar(255),
+  `brand_id` int,
+  `category_id` int,
+  `color_id` int,
+  `size_id` int,
+  `price` decimal -- item price
+);
 
-// Stores each physical item unit using RFID
-Table item_units {
-  rfid varchar [pk] // primary key RFID for each item unit
-  item_id int // connects unit to clothing item
-  location_id int // connects unit to location
-  unit_status_id int // connects unit to status
-}
+-- Item units
+CREATE TABLE `item_units` (
+  `rfid` varchar(255) PRIMARY KEY, -- RFID tag
+  `item_id` int,
+  `location_id` int,
+  `unit_status_id` int
+);
 
-// Stores statuses for item units
-Table unit_statuses {
-  unit_status_id int [pk] // primary key for each unit status
-  status_name varchar [unique] // unique status name
-}
+-- Unit statuses
+CREATE TABLE `unit_statuses` (
+  `unit_status_id` int PRIMARY KEY,
+  `status_name` varchar(255) UNIQUE
+);
 
-// Stores inventory counts for each item
-Table inventory {
-  item_id int [pk] // primary key and link to clothing item
-  quantity_available int // amount currently available
-  reorder_level int // minimum amount before reorder
-  future_shipment_quantity int // amount expected in future shipments
-}
+-- Inventory
+CREATE TABLE `inventory` (
+  `item_id` int PRIMARY KEY,
+  `quantity_available` int, -- stock amount
+  `reorder_level` int, -- reorder point
+  `future_shipment_quantity` int -- incoming stock
+);
 
-// Stores customer orders
-Table orders {
-  order_id int [pk] // primary key for each order
-  customer_id int // connects order to customer
-  employee_id int // connects order to employee
-  order_date timestamp // date and time order was placed
-  delivery_type_id int // connects order to delivery type
-  order_status_id int // connects order to order status
-}
+-- Orders
+CREATE TABLE `orders` (
+  `order_id` int PRIMARY KEY,
+  `customer_id` int,
+  `employee_id` int,
+  `order_date` timestamp, -- order date
+  `delivery_type_id` int,
+  `order_status_id` int
+);
 
-// Stores items inside each order
-Table order_items {
-  order_item_id int [pk] // primary key for each order item
-  order_id int // connects item to order
-  item_id int // connects to clothing item
-  quantity int // number of items ordered
-  unit_price decimal // price per item at purchase time
-}
+-- Order items
+CREATE TABLE `order_items` (
+  `order_item_id` int PRIMARY KEY,
+  `order_id` int,
+  `item_id` int,
+  `quantity` int, -- quantity ordered
+  `unit_price` decimal -- sale price
+);
 
-// Stores delivery type options
-Table delivery_types {
-  delivery_type_id int [pk] // primary key for delivery type
-  delivery_type_name varchar [unique] // unique delivery type name
-}
+-- Delivery types
+CREATE TABLE `delivery_types` (
+  `delivery_type_id` int PRIMARY KEY,
+  `delivery_type_name` varchar(255) UNIQUE
+);
 
-// Stores order status options
-Table order_statuses {
-  order_status_id int [pk] // primary key for order status
-  status_name varchar [unique] // unique order status name
-}
+-- Order statuses
+CREATE TABLE `order_statuses` (
+  `order_status_id` int PRIMARY KEY,
+  `status_name` varchar(255) UNIQUE
+);
 
-// Stores completed sale information
-Table sales {
-  sale_id int [pk] // primary key for each sale
-  order_id int [unique] // one sale connects to one order
-  payment_method_id int // connects sale to payment method
-  sale_date timestamp // date and time of sale
-  total_amount decimal // total sale amount
-}
+-- Sales
+CREATE TABLE `sales` (
+  `sale_id` int PRIMARY KEY,
+  `order_id` int UNIQUE,
+  `payment_method_id` int,
+  `sale_date` timestamp,
+  `total_amount` decimal -- total sale
+);
 
-// Stores payment methods
-Table payment_methods {
-  payment_method_id int [pk] // primary key for payment method
-  payment_method_name varchar [unique] // unique payment method name
-}
+-- Payment methods
+CREATE TABLE `payment_methods` (
+  `payment_method_id` int PRIMARY KEY,
+  `payment_method_name` varchar(255) UNIQUE
+);
 
-// Stores employee commission information
-Table commissions {
-  commission_id int [pk] // primary key for each commission
-  employee_id int // connects commission to employee
-  order_id int [unique] // one commission per order
-  commission_amount decimal // commission amount earned
-}
+-- Commissions
+CREATE TABLE `commissions` (
+  `commission_id` int PRIMARY KEY,
+  `employee_id` int,
+  `order_id` int UNIQUE,
+  `commission_amount` decimal -- commission earned
+);
 
-// Stores supplier information
-Table suppliers {
-  supplier_id int [pk] // primary key for each supplier
-  supplier_name varchar // supplier name
-  phone_number varchar // supplier phone number
-  email varchar // supplier email
-}
+-- Suppliers
+CREATE TABLE `suppliers` (
+  `supplier_id` int PRIMARY KEY,
+  `supplier_name` varchar(255),
+  `phone_number` varchar(255),
+  `email` varchar(255)
+);
 
-// Junction table connecting suppliers and items
-Table supplier_items {
-  supplier_id int // connects to supplier
-  item_id int // connects to clothing item
+-- Supplier items
+CREATE TABLE `supplier_items` (
+  `supplier_id` int,
+  `item_id` int,
+  PRIMARY KEY (`supplier_id`, `item_id`) -- composite key
+);
 
-  indexes {
-    (supplier_id, item_id) [pk] // composite primary key
-  }
-}
+-- Restock orders
+CREATE TABLE `restock_orders` (
+  `restock_id` int PRIMARY KEY,
+  `supplier_id` int,
+  `order_date` timestamp,
+  `expected_arrival` timestamp, -- expected delivery
+  `restock_status_id` int
+);
 
-// Stores restock orders from suppliers
-Table restock_orders {
-  restock_id int [pk] // primary key for each restock order
-  supplier_id int // connects restock order to supplier
-  order_date timestamp // date restock order was placed
-  expected_arrival timestamp // expected arrival date
-  restock_status_id int // connects to restock status
-}
+-- Restock items
+CREATE TABLE `restock_order_items` (
+  `restock_item_id` int PRIMARY KEY,
+  `restock_id` int,
+  `item_id` int,
+  `quantity_ordered` int -- amount ordered
+);
 
-// Stores items inside restock orders
-Table restock_order_items {
-  restock_item_id int [pk] // primary key for each restock item
-  restock_id int // connects to restock order
-  item_id int // connects to clothing item
-  quantity_ordered int // amount ordered
-}
+-- Restock statuses
+CREATE TABLE `restock_statuses` (
+  `restock_status_id` int PRIMARY KEY,
+  `status_name` varchar(255) UNIQUE
+);
 
-// Stores restock status options
-Table restock_statuses {
-  restock_status_id int [pk] // primary key for restock status
-  status_name varchar [unique] // unique restock status name
-}
+-- Foreign keys
+ALTER TABLE `employees`
+ADD FOREIGN KEY (`role_id`) REFERENCES `employee_roles` (`role_id`);
 
-// Employee role relationship
-Ref: employees.role_id > employee_roles.role_id // many employees can have one role
+ALTER TABLE `customers`
+ADD FOREIGN KEY (`loyalty_id`) REFERENCES `loyalty_levels` (`loyalty_id`);
 
-// Customer loyalty relationship
-Ref: customers.loyalty_id > loyalty_levels.loyalty_id // many customers can have one loyalty level
+ALTER TABLE `clothing_items`
+ADD FOREIGN KEY (`brand_id`) REFERENCES `brands` (`brand_id`);
 
-// Clothing item lookup relationships
-Ref: clothing_items.brand_id > brands.brand_id // many items can have one brand
-Ref: clothing_items.category_id > categories.category_id // many items can have one category
-Ref: clothing_items.color_id > colors.color_id // many items can have one color
-Ref: clothing_items.size_id > sizes.size_id // many items can have one size
+ALTER TABLE `clothing_items`
+ADD FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 
-// Item unit relationships
-Ref: item_units.item_id > clothing_items.item_id // many units can belong to one item
-Ref: item_units.location_id > locations.location_id // many units can be at one location
-Ref: item_units.unit_status_id > unit_statuses.unit_status_id // many units can share one status
+ALTER TABLE `clothing_items`
+ADD FOREIGN KEY (`color_id`) REFERENCES `colors` (`color_id`);
 
-// Inventory relationship
-Ref: inventory.item_id - clothing_items.item_id // one inventory record per clothing item
+ALTER TABLE `clothing_items`
+ADD FOREIGN KEY (`size_id`) REFERENCES `sizes` (`size_id`);
 
-// Order relationships
-Ref: orders.customer_id > customers.customer_id // many orders can belong to one customer
-Ref: orders.employee_id > employees.employee_id // many orders can be handled by one employee
-Ref: orders.delivery_type_id > delivery_types.delivery_type_id // many orders can use one delivery type
-Ref: orders.order_status_id > order_statuses.order_status_id // many orders can share one status
+ALTER TABLE `item_units`
+ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
 
-// Order item relationships
-Ref: order_items.order_id > orders.order_id // many order items can belong to one order
-Ref: order_items.item_id > clothing_items.item_id // many order items can reference one clothing item
+ALTER TABLE `item_units`
+ADD FOREIGN KEY (`location_id`) REFERENCES `locations` (`location_id`);
 
-// Sales relationships
-Ref: sales.order_id - orders.order_id // one sale connects to one order
-Ref: sales.payment_method_id > payment_methods.payment_method_id // many sales can use one payment method
+ALTER TABLE `item_units`
+ADD FOREIGN KEY (`unit_status_id`) REFERENCES `unit_statuses` (`unit_status_id`);
 
-// Commission relationships
-Ref: commissions.employee_id > employees.employee_id // many commissions can belong to one employee
-Ref: commissions.order_id > orders.order_id // commission connects to an order
+ALTER TABLE `clothing_items`
+ADD FOREIGN KEY (`item_id`) REFERENCES `inventory` (`item_id`);
 
-// Supplier item relationships
-Ref: supplier_items.supplier_id > suppliers.supplier_id // many supplier item rows can belong to one supplier
-Ref: supplier_items.item_id > clothing_items.item_id // many supplier item rows can belong to one item
+ALTER TABLE `orders`
+ADD FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`);
 
-// Restock order relationships
-Ref: restock_orders.supplier_id > suppliers.supplier_id // many restock orders can come from one supplier
-Ref: restock_orders.restock_status_id > restock_statuses.restock_status_id // many restock orders can share one status
-Ref: restock_order_items.restock_id > restock_orders.restock_id // many restock items can belong to one restock order
-Ref: restock_order_items.item_id > clothing_items.item_id // many restock items can reference one clothing item
+ALTER TABLE `orders`
+ADD FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`);
+
+ALTER TABLE `orders`
+ADD FOREIGN KEY (`delivery_type_id`) REFERENCES `delivery_types` (`delivery_type_id`);
+
+ALTER TABLE `orders`
+ADD FOREIGN KEY (`order_status_id`) REFERENCES `order_statuses` (`order_status_id`);
+
+ALTER TABLE `order_items`
+ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+
+ALTER TABLE `order_items`
+ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
+
+ALTER TABLE `orders`
+ADD FOREIGN KEY (`order_id`) REFERENCES `sales` (`order_id`);
+
+ALTER TABLE `sales`
+ADD FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`payment_method_id`);
+
+ALTER TABLE `commissions`
+ADD FOREIGN KEY (`employee_id`) REFERENCES `employees` (`employee_id`);
+
+ALTER TABLE `commissions`
+ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+
+ALTER TABLE `supplier_items`
+ADD FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`);
+
+ALTER TABLE `supplier_items`
+ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
+
+ALTER TABLE `restock_orders`
+ADD FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`);
+
+ALTER TABLE `restock_orders`
+ADD FOREIGN KEY (`restock_status_id`) REFERENCES `restock_statuses` (`restock_status_id`);
+
+ALTER TABLE `restock_order_items`
+ADD FOREIGN KEY (`restock_id`) REFERENCES `restock_orders` (`restock_id`);
+
+ALTER TABLE `restock_order_items`
+ADD FOREIGN KEY (`item_id`) REFERENCES `clothing_items` (`item_id`);
