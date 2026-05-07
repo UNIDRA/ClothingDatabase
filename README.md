@@ -11,7 +11,7 @@ It tracks employees, customers, clothing inventory, RFID-tagged units, sales tra
 |------|---------|
 | [`001_init.sql`](001_init.sql) | Create all tables, constraints, and indexes |
 | [`002_seed_data.sql`](002_seed_data.sql) | Insert sample/seed data |
-| [`003_queries_example.sql`](003_queries_example.sql) | Example SELECT / UPDATE / DELETE queries |
+| [`003_queries_example.sql`](003_queries_example.sql) | Example SELECT / UPDATE / DELETE / View / Trigger queries |
 
 > Additional deep-dives are in [`docs/`](docs/).
 
