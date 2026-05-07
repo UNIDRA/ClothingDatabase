@@ -3,7 +3,7 @@
 A fully-relational clothing store management database built for **PostgreSQL**.  
 It tracks employees, customers, clothing inventory, RFID-tagged units, sales transactions, and supplier restocking.
 
----
+***
 
 ## Run Order
 
@@ -11,12 +11,13 @@ It tracks employees, customers, clothing inventory, RFID-tagged units, sales tra
 |------|---------|
 | [`001_init.sql`](001_init.sql) | Create all tables, constraints, and indexes |
 | [`002_seed_data.sql`](002_seed_data.sql) | Insert sample/seed data |
-| [`003_views.sql`](003_views.sql) | Create reporting and dashboard views |
-| [`004_queries_example.sql`](004_queries_example.sql) | Example SELECT / UPDATE / DELETE queries |
+| [`003_triggers.sql`](003_triggers.sql) | Add triggers for automation & business rules |
+| [`004_views.sql`](004_views.sql) | Create reporting and dashboard views |
+| [`005_queries_example.sql`](005_queries_example.sql) | Example SELECT / UPDATE / DELETE queries |
 
 > Additional deep-dives are in [`docs/`](docs/).
 
----
+***
 
 ## Entity-Relationship Diagram
 
@@ -211,7 +212,18 @@ erDiagram
     RESTOCK_STATUSES       ||--o{ RESTOCK_ORDERS         : "tracks"
 ```
 
----
+***
+
+## Triggers (`003_triggers.sql`)
+
+| Trigger | Table | Event | What it does |
+|---------|-------|-------|--------------|
+| `trg_decrease_inventory_on_sale` | `order_items` | `AFTER INSERT` | Decrements `quantity_available` in `inventory` when an order item is added |
+| `trg_restore_inventory_on_cancel` | `orders` | `AFTER UPDATE` (status change) | Restores `quantity_available` when an order status changes to Cancelled |
+| `trg_mark_unit_sold` | `order_items` | `AFTER INSERT` | Updates matching `item_units` RFID status to Sold |
+| `trg_restock_update_inventory` | `restock_orders` | `AFTER UPDATE` (status → Received) | Adds `quantity_ordered` back to `inventory.quantity_available` when a restock is received |
+
+***
 
 ## Schema Overview (flow)
 
@@ -231,6 +243,18 @@ flowchart TD
     RO -->|contains| ROI[restock_order_items]
     CI -->|restocked in| ROI
 
+    subgraph Automation
+        TRG1(trg_decrease_inventory_on_sale)
+        TRG2(trg_restore_inventory_on_cancel)
+        TRG3(trg_mark_unit_sold)
+        TRG4(trg_restock_update_inventory)
+    end
+
+    OI -.->|AFTER INSERT| TRG1
+    O -.->|AFTER UPDATE status| TRG2
+    OI -.->|AFTER INSERT| TRG3
+    RO -.->|AFTER UPDATE status| TRG4
+
     subgraph Lookups
         ER[employee_roles]
         LL[loyalty_levels]
@@ -247,7 +271,7 @@ flowchart TD
     end
 ```
 
----
+***
 
 ## Quick Start
 
@@ -255,11 +279,12 @@ flowchart TD
 -- Run in order inside psql
 \i 001_init.sql
 \i 002_seed_data.sql
-\i 003_views.sql
-\i 004_queries_example.sql
+\i 003_triggers.sql
+\i 004_views.sql
+\i 005_queries_example.sql
 ```
 
----
+***
 
 ## Docs
 
@@ -268,11 +293,12 @@ Extended documentation lives in [`docs/`](docs/):
 | File | Contents |
 |------|---------|
 | `docs/schema.md` | Detailed column-level notes and constraint explanations |
+| `docs/triggers.md` | Trigger logic walk-through with example scenarios |
 | `docs/views.md` | View query explanations and sample output |
 | `docs/inventory.md` | Inventory tracking, RFID logic, and reorder threshold design |
 | `docs/sales.md` | Sales transaction flow, commission calculation, and payment methods |
 
----
+***
 
 ## Team
 
